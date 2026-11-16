@@ -1,0 +1,151 @@
+{% comment %}
+  Section contract.
+  Rutina en pasos: cada bloque enlaza un producto y explica cuándo usarlo.
+{% endcomment %}
+
+{%- render 'eb-estilos' -%}
+
+<div class="eb-section eb-ritual">
+  <div class="eb-wrap">
+    <div class="eb-ritual__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eb-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 class="eb-h2">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.text != blank -%}
+        <p class="eb-lead">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <ol class="eb-ritual__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign producto = block.settings.product -%}
+        <li class="eb-ritual__step" {{ block.shopify_attributes }}>
+          <div class="eb-ritual__media">
+            {%- if producto != blank and producto.featured_image -%}
+              {{
+                producto.featured_image
+                | image_url: width: 900
+                | image_tag:
+                  class: 'eb-ritual__img',
+                  loading: 'lazy',
+                  widths: '300, 450, 600, 900',
+                  sizes: '(min-width: 750px) 33vw, 100vw',
+                  alt: producto.title
+              }}
+            {%- endif -%}
+            <span class="eb-ritual__num">Paso {{ forloop.index }}</span>
+          </div>
+          <h3 class="eb-ritual__title">{{ block.settings.title | escape }}</h3>
+          <p class="eb-ritual__text">{{ block.settings.text | escape }}</p>
+          {%- if producto != blank -%}
+            <a class="eb-link" href="{{ producto.url }}">{{ producto.title | escape }} · {{ producto.price | money }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</div>
+
+{% stylesheet %}
+  .eb-ritual {
+    background: #f3ece0;
+  }
+
+  .eb-ritual__head {
+    max-width: 720px;
+    margin-bottom: clamp(28px, 4vw, 52px);
+  }
+
+  .eb-ritual__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 40px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .eb-ritual__step {
+    min-width: 0;
+  }
+
+  .eb-ritual__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #e7dccb;
+  }
+
+  .eb-ritual__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .eb-ritual__num {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgb(250 246 239 / 0.92);
+    font-family: var(--font-subheading--family);
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #2e2a24;
+  }
+
+  .eb-ritual__title {
+    margin: 20px 0 6px;
+    font-family: var(--font-heading--family);
+    font-weight: 500;
+    font-size: 1.7rem;
+    line-height: 1.1;
+    color: #2e2a24;
+  }
+
+  .eb-ritual__text {
+    margin: 0 0 12px;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: #5b5348;
+  }
+
+  @media (max-width: 749px) {
+    .eb-ritual__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .eb-ritual__media {
+      aspect-ratio: 4 / 3;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "EB · Rutina en pasos",
+  "tag": "section",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Tu rutina" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Tres pasos y ya está" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Una rutina corta que de verdad vas a seguir." }
+  ],
+  "blocks": [
+    {
+      "type": "paso",
+      "name": "Paso",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Producto" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Limpia" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Explica aquí el paso." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "EB · Rutina en pasos", "blocks": [{ "type": "paso" }, { "type": "paso" }, { "type": "paso" }] }]
+}
+{% endschema %}

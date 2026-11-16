@@ -1,0 +1,100 @@
+{% comment %}
+  Section contract.
+  Franja de compromisos de la marca: de dos a cuatro bloques con título y texto corto.
+{% endcomment %}
+
+{%- render 'eb-estilos' -%}
+
+<div class="eb-valores">
+  <div class="eb-wrap">
+    <ul class="eb-valores__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="eb-valores__item" {{ block.shopify_attributes }}>
+          <span class="eb-valores__num" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+          <div>
+            <p class="eb-valores__title">{{ block.settings.title | escape }}</p>
+            {%- if block.settings.text != blank -%}
+              <p class="eb-valores__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% stylesheet %}
+  .eb-valores {
+    background: #efe6d8;
+    padding-block: clamp(28px, 4vw, 44px);
+  }
+
+  .eb-valores__list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 40px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .eb-valores__item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  .eb-valores__num {
+    font-family: var(--font-heading--family);
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #a65f43;
+  }
+
+  .eb-valores__title {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-weight: 500;
+    font-size: 0.98rem;
+    color: #2e2a24;
+  }
+
+  .eb-valores__text {
+    margin: 4px 0 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: #5b5348;
+  }
+
+  @media (max-width: 989px) {
+    .eb-valores__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 479px) {
+    .eb-valores__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "EB · Compromisos",
+  "tag": "section",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "valor",
+      "name": "Compromiso",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Ingredientes naturales" },
+        { "type": "text", "id": "text", "label": "Texto", "default": "Más del 95 % de origen natural." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "EB · Compromisos", "blocks": [{ "type": "valor" }, { "type": "valor" }, { "type": "valor" }, { "type": "valor" }] }]
+}
+{% endschema %}

@@ -1,0 +1,443 @@
+{% comment %}
+  Section contract.
+  Portada de Eres Bella: foto a sangre que se funde con el fondo por la izquierda, titular con
+  final destacado, botones, tres datos de confianza, tarjeta flotante de un producto y cinta de frases.
+  @example
+  Se configura en la portada: imagen de fondo, producto destacado y textos.
+{% endcomment %}
+
+{%- render 'eb-estilos' -%}
+
+{%- liquid
+  assign producto = section.settings.product
+  assign frases = section.settings.marquee | split: ','
+-%}
+
+<div class="eb-hero">
+  <div class="eb-hero__stage">
+    {%- if section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 2400
+        | image_tag:
+          class: 'eb-hero__img',
+          loading: 'eager',
+          fetchpriority: 'high',
+          widths: '750, 1100, 1500, 2000, 2400',
+          sizes: '100vw',
+          alt: section.settings.image.alt
+        | default: section.settings.heading
+      }}
+    {%- endif -%}
+    <div class="eb-hero__veil"></div>
+
+    <div class="eb-wrap eb-hero__inner">
+      <div class="eb-hero__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eb-hero__pill"><span aria-hidden="true"></span>{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1 class="eb-hero__title">
+          {{ section.settings.heading | escape }}
+          {%- if section.settings.heading_accent != blank %}
+            <em>{{ section.settings.heading_accent | escape }}</em>
+          {%- endif -%}
+        </h1>
+        {%- if section.settings.text != blank -%}
+          <p class="eb-hero__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+        <div class="eb-hero__actions">
+          {%- if section.settings.button_label != blank -%}
+            <a class="eb-btn" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+              {{- section.settings.button_label | escape }} <span aria-hidden="true">→</span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button2_label != blank -%}
+            <a class="eb-btn eb-btn--ghost" href="{{ section.settings.button2_link | default: routes.collections_url }}">
+              {{- section.settings.button2_label | escape -}}
+            </a>
+          {%- endif -%}
+        </div>
+        <ul class="eb-hero__facts" role="list">
+          {%- for i in (1..3) -%}
+            {%- liquid
+              assign clave = 'fact' | append: i
+              assign dato = section.settings[clave]
+            -%}
+            {%- if dato != blank -%}
+              <li>{{ dato | escape }}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+
+    {%- if producto != blank -%}
+      <a class="eb-hero__card" href="{{ producto.url }}">
+        {%- if producto.featured_image -%}
+          {{ producto.featured_image | image_url: width: 200 | image_tag: class: 'eb-hero__thumb', loading: 'eager', alt: '' }}
+        {%- endif -%}
+        <span class="eb-hero__card-body">
+          <span class="eb-hero__card-label">{{ section.settings.card_label | escape }}</span>
+          <span class="eb-hero__card-title">{{ producto.title | escape }}</span>
+          <span class="eb-hero__card-price">
+            {{ producto.price | money }}
+            {%- if producto.compare_at_price > producto.price %} <s>{{ producto.compare_at_price | money }}</s>{% endif -%}
+          </span>
+        </span>
+        <span class="eb-hero__card-arrow" aria-hidden="true">→</span>
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- if frases.size > 0 and section.settings.marquee != blank -%}
+    <div class="eb-hero__ribbon" aria-hidden="true">
+      <div class="eb-hero__track">
+        {%- for vuelta in (1..2) -%}
+          {%- for frase in frases -%}
+            <span>{{ frase | strip | escape }}</span>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .eb-hero {
+    position: relative;
+    overflow: hidden;
+    background: #efe6d8;
+  }
+
+  .eb-hero__stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: min(86vh, 800px);
+  }
+
+  .eb-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 70% center;
+  }
+
+  .eb-hero__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(250 246 239 / 0.96) 0%, rgb(250 246 239 / 0.86) 36%, rgb(250 246 239 / 0) 70%);
+  }
+
+  .eb-hero__inner {
+    position: relative;
+    padding-block: clamp(56px, 7vw, 96px);
+  }
+
+  .eb-hero__copy {
+    max-width: 640px;
+  }
+
+  .eb-hero__pill {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    margin: 0 0 22px;
+    padding: 8px 16px;
+    border: 1px solid #e2d4c2;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.55);
+    font-family: var(--font-subheading--family);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #a65f43;
+  }
+
+  .eb-hero__pill span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #a65f43;
+  }
+
+  .eb-hero__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 500;
+    font-size: clamp(2.9rem, 6.2vw, 5.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: #2e2a24;
+  }
+
+  .eb-hero__title em {
+    display: block;
+    font-style: italic;
+    color: #a65f43;
+  }
+
+  .eb-hero__text {
+    max-width: 44ch;
+    margin: 24px 0 0;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: #4a443b;
+  }
+
+  .eb-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .eb-hero__actions .eb-btn span {
+    margin-left: 8px;
+    transition: transform 0.25s ease;
+  }
+
+  .eb-hero__actions .eb-btn:hover span {
+    transform: translateX(4px);
+  }
+
+  .eb-hero__actions .eb-btn--ghost {
+    background: rgb(250 246 239 / 0.6);
+  }
+
+  .eb-hero__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+    margin: 36px 0 0;
+    padding: 22px 0 0;
+    border-top: 1px solid rgb(46 42 36 / 0.14);
+    list-style: none;
+  }
+
+  .eb-hero__facts li {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-family: var(--font-subheading--family);
+    font-size: 0.88rem;
+    color: #4a443b;
+  }
+
+  .eb-hero__facts li::before {
+    content: '✓';
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3b4636;
+    font-size: 0.68rem;
+    color: #faf6ef;
+  }
+
+  .eb-hero__card {
+    position: absolute;
+    right: clamp(20px, 4vw, 56px);
+    bottom: clamp(20px, 4vw, 48px);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 300px;
+    padding: 10px 14px 10px 10px;
+    border-radius: 18px;
+    background: rgb(255 255 255 / 0.94);
+    box-shadow: 0 24px 50px -20px rgb(46 42 36 / 0.45);
+    backdrop-filter: blur(6px);
+    color: #2e2a24;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+
+  .eb-hero__card:hover {
+    transform: translateY(-4px);
+  }
+
+  .eb-hero__thumb {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .eb-hero__card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .eb-hero__card-label {
+    font-family: var(--font-subheading--family);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #a65f43;
+  }
+
+  .eb-hero__card-title {
+    font-family: var(--font-heading--family);
+    font-size: 1.12rem;
+    line-height: 1.2;
+  }
+
+  .eb-hero__card-price {
+    font-family: var(--font-subheading--family);
+    font-size: 0.86rem;
+  }
+
+  .eb-hero__card-price s {
+    margin-left: 4px;
+    color: #9a9082;
+  }
+
+  .eb-hero__card-arrow {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #2e2a24;
+    color: #faf6ef;
+  }
+
+  .eb-hero__ribbon {
+    overflow: hidden;
+    padding: 14px 0;
+    background: #3b4636;
+    white-space: nowrap;
+  }
+
+  .eb-hero__track {
+    display: inline-flex;
+    gap: 44px;
+    animation: eb-hero-marquee 34s linear infinite;
+  }
+
+  .eb-hero__track span {
+    display: inline-flex;
+    gap: 44px;
+    align-items: center;
+    font-family: var(--font-heading--family);
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #f3ece0;
+  }
+
+  .eb-hero__track span::after {
+    content: '✿';
+    font-size: 0.9rem;
+    font-style: normal;
+    color: #d9b79a;
+  }
+
+  .eb-hero__copy > * {
+    animation: eb-hero-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .eb-hero__copy > *:nth-child(2) { animation-delay: 0.08s; }
+  .eb-hero__copy > *:nth-child(3) { animation-delay: 0.16s; }
+  .eb-hero__copy > *:nth-child(4) { animation-delay: 0.24s; }
+  .eb-hero__copy > *:nth-child(5) { animation-delay: 0.32s; }
+
+  .eb-hero__card {
+    animation: eb-hero-up 1s 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  @keyframes eb-hero-up {
+    from { opacity: 0; transform: translateY(24px); }
+  }
+
+  @keyframes eb-hero-marquee {
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 749px) {
+    .eb-hero__stage {
+      display: block;
+      min-height: 0;
+      background: #faf6ef;
+    }
+
+    .eb-hero__img {
+      position: static;
+      display: block;
+      height: auto;
+      aspect-ratio: 5 / 4;
+      object-position: 82% 85%;
+    }
+
+    .eb-hero__veil,
+    .eb-hero__card {
+      display: none;
+    }
+
+    .eb-hero__inner {
+      padding-block: 30px 44px;
+    }
+
+    .eb-hero__pill {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+    }
+
+    .eb-hero__title {
+      font-size: clamp(2.5rem, 11vw, 3.4rem);
+    }
+
+    .eb-hero__text {
+      font-size: 1rem;
+    }
+
+    .eb-hero__actions .eb-btn {
+      flex: 1 1 auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eb-hero__copy > *,
+    .eb-hero__card,
+    .eb-hero__track {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "EB · Portada",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Textos" },
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta superior", "default": "Cosmética natural · Hecha en España" },
+    { "type": "text", "id": "heading", "label": "Titular", "default": "Tu piel, en su" },
+    { "type": "text", "id": "heading_accent", "label": "Final del titular destacado", "default": "versión más natural" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Lino lavado y complementos hechos a mano." },
+    { "type": "text", "id": "button_label", "label": "Botón principal", "default": "Comprar la colección" },
+    { "type": "url", "id": "button_link", "label": "Enlace del botón principal" },
+    { "type": "text", "id": "button2_label", "label": "Botón secundario", "default": "Ver novedades" },
+    { "type": "url", "id": "button2_link", "label": "Enlace del botón secundario" },
+    { "type": "text", "id": "fact1", "label": "Dato 1", "default": "Envío gratis desde 50 €" },
+    { "type": "text", "id": "fact2", "label": "Dato 2", "default": "Cambios gratis en 30 días" },
+    { "type": "text", "id": "fact3", "label": "Dato 3", "default": "Hecho en talleres pequeños" },
+    { "type": "header", "content": "Imagen" },
+    { "type": "image_picker", "id": "image", "label": "Imagen de fondo" },
+    { "type": "header", "content": "Producto destacado" },
+    { "type": "product", "id": "product", "label": "Producto" },
+    { "type": "text", "id": "card_label", "label": "Etiqueta de la tarjeta", "default": "Nuevo" },
+    { "type": "header", "content": "Cinta inferior" },
+    { "type": "text", "id": "marquee", "label": "Frases separadas por comas", "default": "100 % lino, Hecho a mano, Talleres pequeños" }
+  ],
+  "presets": [{ "name": "EB · Portada" }]
+}
+{% endschema %}

@@ -1,0 +1,162 @@
+{% comment %}
+  Section contract.
+  Accesos a colecciones en forma de teselas. Si la colección no tiene imagen propia,
+  usa la foto de su primer producto.
+{% endcomment %}
+
+{%- render 'eb-estilos' -%}
+
+<div class="eb-section eb-categorias">
+  <div class="eb-wrap">
+    <div class="eb-section__head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eb-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="eb-h2">{{ section.settings.heading | escape }}</h2>
+      </div>
+    </div>
+
+    <ul class="eb-categorias__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign coleccion = block.settings.collection
+          if coleccion == blank
+            continue
+          endif
+          assign imagen = coleccion.featured_image | default: coleccion.products.first.featured_image
+          assign titulo = block.settings.title | default: coleccion.title
+        -%}
+        <li class="eb-categorias__item" {{ block.shopify_attributes }}>
+          <a class="eb-categorias__link" href="{{ coleccion.url }}">
+            {%- if imagen -%}
+              {{
+                imagen
+                | image_url: width: 1100
+                | image_tag:
+                  class: 'eb-categorias__img',
+                  loading: 'lazy',
+                  widths: '400, 600, 800, 1100',
+                  sizes: '(min-width: 750px) 33vw, 100vw',
+                  alt: ''
+              }}
+            {%- endif -%}
+            <span class="eb-categorias__shade"></span>
+            <span class="eb-categorias__label">
+              <span class="eb-categorias__title">{{ titulo | escape }}</span>
+              <span class="eb-categorias__count">
+                {{- coleccion.products_count }} {% if coleccion.products_count == 1 %}producto{% else %}productos{% endif -%}
+              </span>
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% stylesheet %}
+  .eb-categorias__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 24px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .eb-categorias__link {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #e7dccb;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .eb-categorias__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+  }
+
+  .eb-categorias__link:hover .eb-categorias__img {
+    transform: scale(1.05);
+  }
+
+  .eb-categorias__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgb(30 26 20 / 0.62) 0%, rgb(30 26 20 / 0) 55%);
+  }
+
+  .eb-categorias__label {
+    position: absolute;
+    right: 22px;
+    bottom: 20px;
+    left: 22px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .eb-categorias__title {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    line-height: 1;
+  }
+
+  .eb-categorias__count {
+    font-family: var(--font-subheading--family);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 749px) {
+    .eb-categorias__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .eb-categorias__link {
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eb-categorias__img {
+      transition: none;
+    }
+
+    .eb-categorias__link:hover .eb-categorias__img {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "EB · Categorías",
+  "tag": "section",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Compra por categoría" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Encuentra lo tuyo" }
+  ],
+  "blocks": [
+    {
+      "type": "categoria",
+      "name": "Categoría",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Colección" },
+        { "type": "text", "id": "title", "label": "Título (opcional)" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "EB · Categorías", "blocks": [{ "type": "categoria" }, { "type": "categoria" }, { "type": "categoria" }] }]
+}
+{% endschema %}

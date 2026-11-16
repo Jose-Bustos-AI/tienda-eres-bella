@@ -1,0 +1,195 @@
+{
+  "sections": {
+    "eb_hero": {
+      "type": "eb-hero",
+      "settings": {
+        "eyebrow": "Cosmética natural · Hecha en España",
+        "heading": "Tu piel, en su",
+        "heading_accent": "versión más natural",
+        "text": "Sérums, cremas y aceites con ingredientes que reconoces, elaborados en lotes pequeños. Sin rellenos, sin prisas y sin nada que tu piel no necesite.",
+        "button_label": "Descubrir la tienda",
+        "button_link": "shopify://collections/all",
+        "button2_label": "Ver la rutina completa",
+        "button2_link": "shopify://products/set-rutina-facial",
+        "fact1": "Envío gratis desde 39 €",
+        "fact2": "100 % vegano",
+        "fact3": "Hecho en España",
+        "image": "shopify://shop_images/eres-bella-portada.jpg",
+        "product": "set-rutina-facial",
+        "card_label": "Ahorra 9,80 €",
+        "marquee": "Vegano, Sin parabenos, Hecho en España, Lotes pequeños, Ingredientes naturales, Envío gratis desde 39 €"
+      }
+    },
+    "eb_valores": {
+      "type": "eb-valores",
+      "blocks": {
+        "v1": {
+          "type": "valor",
+          "settings": {
+            "title": "Ingredientes naturales",
+            "text": "Más del 95 % de origen natural."
+          }
+        },
+        "v2": {
+          "type": "valor",
+          "settings": {
+            "title": "Vegano y sin crueldad",
+            "text": "Nunca testado en animales."
+          }
+        },
+        "v3": {
+          "type": "valor",
+          "settings": {
+            "title": "Lotes pequeños",
+            "text": "Elaborado en España, siempre fresco."
+          }
+        },
+        "v4": {
+          "type": "valor",
+          "settings": {
+            "title": "Envío en 24-48 h",
+            "text": "Gratis a partir de 39 €."
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ],
+      "settings": {}
+    },
+    "eb_destacados": {
+      "type": "eb-destacados",
+      "settings": {
+        "eyebrow": "Los favoritos",
+        "heading": "Más vendidos",
+        "collection": "mas-vendidos",
+        "limit": 8,
+        "link_label": "Ver todos"
+      }
+    },
+    "eb_ritual": {
+      "type": "eb-ritual",
+      "blocks": {
+        "p1": {
+          "type": "paso",
+          "settings": {
+            "product": "limpiador-avena",
+            "title": "Limpia",
+            "text": "Retira impurezas y maquillaje sin resecar. Mañana y noche, con agua tibia."
+          }
+        },
+        "p2": {
+          "type": "paso",
+          "settings": {
+            "product": "serum-vitamina-c",
+            "title": "Trata",
+            "text": "Tres gotas de vitamina C por la mañana para una piel más luminosa y uniforme."
+          }
+        },
+        "p3": {
+          "type": "paso",
+          "settings": {
+            "product": "crema-aloe-calendula",
+            "title": "Hidrata",
+            "text": "Sella la hidratación con aloe y caléndula. Calma y deja la piel suave, sin brillos."
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ],
+      "settings": {
+        "eyebrow": "Tu rutina",
+        "heading": "Tres pasos y ya está",
+        "text": "No hace falta un baño lleno de botes. Una rutina corta que de verdad vas a seguir cada día."
+      }
+    },
+    "eb_categorias": {
+      "type": "eb-categorias",
+      "blocks": {
+        "c1": {
+          "type": "categoria",
+          "settings": {
+            "collection": "rostro",
+            "title": ""
+          }
+        },
+        "c2": {
+          "type": "categoria",
+          "settings": {
+            "collection": "cuerpo",
+            "title": ""
+          }
+        },
+        "c3": {
+          "type": "categoria",
+          "settings": {
+            "collection": "mas-vendidos",
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "eyebrow": "Compra por categoría",
+        "heading": "Encuentra lo tuyo"
+      }
+    },
+    "eb_filosofia": {
+      "type": "eb-filosofia",
+      "blocks": {
+        "f1": {
+          "type": "punto",
+          "settings": {
+            "title": "Aloe vera",
+            "text": "Ecológico, calma e hidrata la piel sensible."
+          }
+        },
+        "f2": {
+          "type": "punto",
+          "settings": {
+            "title": "Rosa mosqueta",
+            "text": "Prensada en frío, regenera y atenúa marcas."
+          }
+        },
+        "f3": {
+          "type": "punto",
+          "settings": {
+            "title": "Karité",
+            "text": "Nutre y repara las zonas más secas."
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/eres-bella-aceite-rosa-mosqueta.jpg",
+        "eyebrow": "Nuestra filosofía",
+        "heading": "Menos ingredientes, mejor elegidos",
+        "text": "Cada fórmula de Eres Bella tiene los ingredientes justos y ninguno de relleno. Los elaboramos en lotes pequeños para que lleguen a tu casa recién hechos.",
+        "button_label": "Descubre la colección",
+        "button_link": "shopify://collections/all"
+      }
+    }
+  },
+  "order": [
+    "eb_hero",
+    "eb_valores",
+    "eb_destacados",
+    "eb_ritual",
+    "eb_categorias",
+    "eb_filosofia"
+  ]
+}

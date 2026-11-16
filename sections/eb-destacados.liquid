@@ -1,0 +1,244 @@
+{% comment %}
+  Section contract.
+  Rejilla de productos de una colección con foto, precio y botón de añadir al carrito.
+  El formulario es un envío normal a /cart/add, así que funciona sin JavaScript.
+{% endcomment %}
+
+{%- render 'eb-estilos' -%}
+
+{%- liquid
+  assign coleccion = section.settings.collection
+  assign limite = section.settings.limit
+-%}
+
+<div class="eb-section eb-destacados">
+  <div class="eb-wrap">
+    <div class="eb-section__head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eb-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="eb-h2">{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if coleccion != blank and section.settings.link_label != blank -%}
+        <a class="eb-link" href="{{ coleccion.url }}">{{ section.settings.link_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if coleccion != blank and coleccion.products_count > 0 -%}
+      <ul class="eb-grid" role="list">
+        {%- for product in coleccion.products limit: limite -%}
+          {%- assign variante = product.selected_or_first_available_variant -%}
+          <li class="eb-card">
+            <a class="eb-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+              {%- if product.featured_image -%}
+                {{
+                  product.featured_image
+                  | image_url: width: 900
+                  | image_tag:
+                    class: 'eb-card__img',
+                    loading: 'lazy',
+                    widths: '300, 450, 600, 900',
+                    sizes: '(min-width: 990px) 25vw, 50vw',
+                    alt: product.featured_image.alt
+                  | default: product.title
+                }}
+              {%- endif -%}
+              {%- if product.compare_at_price > product.price -%}
+                <span class="eb-card__badge">Oferta</span>
+              {%- endif -%}
+            </a>
+            <div class="eb-card__body">
+              <p class="eb-card__type">{{ product.type | escape }}</p>
+              <h3 class="eb-card__title">
+                <a href="{{ product.url }}">{{ product.title | escape }}</a>
+              </h3>
+              <p class="eb-card__price">
+                <span>{{ product.price | money }}</span>
+                {%- if product.compare_at_price > product.price -%}
+                  <s>{{ product.compare_at_price | money }}</s>
+                {%- endif -%}
+              </p>
+              {%- if variante.available -%}
+                <form method="post" action="{{ routes.cart_add_url }}" class="eb-card__form">
+                  <input type="hidden" name="id" value="{{ variante.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="eb-card__btn">Añadir al carrito</button>
+                </form>
+              {%- else -%}
+                <p class="eb-card__soldout">Agotado</p>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <p class="eb-lead">Elige una colección con productos en los ajustes de esta sección.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .eb-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(16px, 2.4vw, 32px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .eb-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .eb-card__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #efe6d8;
+  }
+
+  .eb-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .eb-card__media:hover .eb-card__img {
+    transform: scale(1.045);
+  }
+
+  .eb-card__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: #a65f43;
+    color: #fff;
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .eb-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding-top: 16px;
+  }
+
+  .eb-card__type {
+    margin: 0 0 4px;
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #8a7f70;
+  }
+
+  .eb-card__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 500;
+    font-size: 1.32rem;
+    line-height: 1.18;
+  }
+
+  .eb-card__title a {
+    color: #2e2a24;
+    text-decoration: none;
+  }
+
+  .eb-card__title a:hover {
+    color: #a65f43;
+  }
+
+  .eb-card__price {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    margin: 8px 0 14px;
+    font-family: var(--font-subheading--family);
+    font-size: 1rem;
+    color: #2e2a24;
+  }
+
+  .eb-card__price s {
+    font-size: 0.88rem;
+    color: #9a9082;
+  }
+
+  .eb-card__form {
+    margin-top: auto;
+  }
+
+  .eb-card__btn {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid #2e2a24;
+    border-radius: 999px;
+    background: transparent;
+    color: #2e2a24;
+    font-family: var(--font-subheading--family);
+    font-size: 0.86rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  .eb-card__btn:hover {
+    background: #2e2a24;
+    color: #faf6ef;
+  }
+
+  .eb-card__soldout {
+    margin: auto 0 0;
+    font-size: 0.86rem;
+    color: #8a7f70;
+  }
+
+  @media (max-width: 989px) {
+    .eb-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .eb-card__title {
+      font-size: 1.14rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eb-card__img,
+    .eb-card__btn {
+      transition: none;
+    }
+
+    .eb-card__media:hover .eb-card__img {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "EB · Productos destacados",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Los favoritos" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Más vendidos" },
+    { "type": "collection", "id": "collection", "label": "Colección" },
+    { "type": "range", "id": "limit", "label": "Número de productos", "min": 2, "max": 8, "step": 1, "default": 4 },
+    { "type": "text", "id": "link_label", "label": "Texto del enlace", "default": "Ver todos" }
+  ],
+  "presets": [{ "name": "EB · Productos destacados" }]
+}
+{% endschema %}
