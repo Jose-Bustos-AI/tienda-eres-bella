@@ -18,16 +18,28 @@
     </div>
 
     <ul class="eb-categorias__list" role="list">
+      {%- assign usadas = '|' -%}
       {%- for block in section.blocks -%}
         {%- liquid
           assign coleccion = block.settings.collection
           if coleccion == blank
             continue
           endif
-          assign imagen = coleccion.featured_image | default: coleccion.products.first.featured_image
+          assign imagen = coleccion.image
+          if imagen == blank
+            assign imagen = coleccion.products.first.featured_image
+            for candidato in coleccion.products limit: 12
+              assign marca = candidato.id | append: '|'
+              unless usadas contains marca
+                assign imagen = candidato.featured_image
+                assign usadas = usadas | append: marca
+                break
+              endunless
+            endfor
+          endif
           assign titulo = block.settings.title | default: coleccion.title
         -%}
-        <li class="eb-categorias__item" {{ block.shopify_attributes }}>
+        <li class="eb-categorias__item eb-reveal" {{ block.shopify_attributes }}>
           <a class="eb-categorias__link" href="{{ coleccion.url }}">
             {%- if imagen -%}
               {{
@@ -99,9 +111,8 @@
     bottom: 20px;
     left: 22px;
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .eb-categorias__title {
@@ -113,8 +124,13 @@
   .eb-categorias__count {
     font-family: var(--font-subheading--family);
     font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    opacity: 0.9;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.92;
+  }
+
+  .eb-categorias__count::after {
+    content: ' \2192';
   }
 
   @media (max-width: 749px) {

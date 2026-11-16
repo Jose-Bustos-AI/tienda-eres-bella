@@ -298,6 +298,93 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "text_eb_confianza": {
+              "type": "text",
+              "settings": {
+                "text": "<p>✓ Envío gratis desde 39 €   ✓ Vegano y sin parabenos   ✓ Entrega en 24-48 h</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font_size": "0.875rem"
+              },
+              "blocks": {}
+            },
+            "accordion_eb": {
+              "type": "accordion",
+              "settings": {
+                "icon": "plus",
+                "dividers": true,
+                "type_preset": "h6"
+              },
+              "blocks": {
+                "r1": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Cómo conservarlo",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "t": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Guárdalo cerrado, en un sitio fresco y seco y lejos de la luz directa. Al no llevar conservantes sintéticos, conviene gastarlo en los seis meses siguientes a abrirlo.</p>",
+                        "type_preset": "rte"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "t"
+                  ]
+                },
+                "r2": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Envíos y devoluciones",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "t": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Envío estándar en 24-48 h por 3,95 €, gratis a partir de 39 €. Envío exprés por 6,95 €. Si llega dañado o no es lo que esperabas, escríbenos y lo resolvemos.</p>",
+                        "type_preset": "rte"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "t"
+                  ]
+                },
+                "r3": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Hecho en lotes pequeños",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "t": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Elaboramos poca cantidad cada vez para que llegue fresco. Fórmulas veganas, con más del 95 % de ingredientes de origen natural y nunca testadas en animales.</p>",
+                        "type_preset": "rte"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "t"
+                  ]
+                }
+              },
+              "block_order": [
+                "r1",
+                "r2",
+                "r3"
+              ]
             }
           },
           "block_order": [
@@ -305,7 +392,9 @@
             "divider_VJhene",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "text_eb_confianza",
+            "text_aEtTtq",
+            "accordion_eb"
           ]
         }
       },

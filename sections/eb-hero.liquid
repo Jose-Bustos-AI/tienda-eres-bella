@@ -11,6 +11,7 @@
 {%- liquid
   assign producto = section.settings.product
   assign frases = section.settings.marquee | split: ','
+  assign alt_portada = section.settings.image.alt | default: section.settings.heading
 -%}
 
 <div class="eb-hero">
@@ -25,8 +26,7 @@
           fetchpriority: 'high',
           widths: '750, 1100, 1500, 2000, 2400',
           sizes: '100vw',
-          alt: section.settings.image.alt
-        | default: section.settings.heading
+          alt: alt_portada
       }}
     {%- endif -%}
     <div class="eb-hero__veil"></div>
@@ -377,9 +377,15 @@
       object-position: 82% 85%;
     }
 
-    .eb-hero__veil,
-    .eb-hero__card {
+    .eb-hero__veil {
       display: none;
+    }
+
+    .eb-hero__card {
+      top: calc(80vw - 92px);
+      right: 14px;
+      bottom: auto;
+      width: min(270px, calc(100vw - 28px));
     }
 
     .eb-hero__inner {

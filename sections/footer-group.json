@@ -1,4 +1,12 @@
-{
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */{
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
@@ -67,7 +75,7 @@
             "text_f9CFLH": {
               "type": "text",
               "settings": {
-                "text": "<p>Novedades, consejos de cuidado y un 10 % en tu primer pedido.</p>",
+                "text": "<p>Novedades, consejos de cuidado y un 10 % en tu primer pedido con el código BIENVENIDA10.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -169,10 +177,48 @@
         "padding-block-start": 20,
         "padding-block-end": 48
       }
+    },
+    "eb_pie": {
+      "type": "eb-pie",
+      "blocks": {
+        "l1": {
+          "type": "linea",
+          "settings": {
+            "text": "Envío en 24-48 h, gratis desde 39 €"
+          }
+        },
+        "l2": {
+          "type": "linea",
+          "settings": {
+            "text": "Vegano y sin crueldad animal"
+          }
+        },
+        "l3": {
+          "type": "linea",
+          "settings": {
+            "text": "Contacto",
+            "link": "shopify://pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3"
+      ],
+      "settings": {
+        "text": "Cosmética natural y vegana, elaborada en España en lotes pequeños.",
+        "menu_title": "Tienda",
+        "menu": "main-menu",
+        "help_title": "Ayuda",
+        "pay_title": "Pago seguro",
+        "pay_text": "Tienda de demostración: el pago es de prueba y no se cobra nada."
+      }
     }
   },
   "order": [
     "footer_m9NzUG",
+    "eb_pie",
     "footer_utilities_jLGE8U"
   ]
 }

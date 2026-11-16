@@ -28,9 +28,13 @@
     {%- if coleccion != blank and coleccion.products_count > 0 -%}
       <ul class="eb-grid" role="list">
         {%- for product in coleccion.products limit: limite -%}
-          {%- assign variante = product.selected_or_first_available_variant -%}
-          <li class="eb-card">
-            <a class="eb-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+          {%- liquid
+            assign variante = product.selected_or_first_available_variant
+            assign alt_foto = product.featured_image.alt | default: product.title
+            assign colores = product.options_by_name['Color'].values.size | default: 0
+          -%}
+          <li class="eb-card eb-reveal">
+            <a class="eb-card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
               {%- if product.featured_image -%}
                 {{
                   product.featured_image
@@ -40,8 +44,7 @@
                     loading: 'lazy',
                     widths: '300, 450, 600, 900',
                     sizes: '(min-width: 990px) 25vw, 50vw',
-                    alt: product.featured_image.alt
-                  | default: product.title
+                    alt: alt_foto
                 }}
               {%- endif -%}
               {%- if product.compare_at_price > product.price -%}
@@ -49,7 +52,10 @@
               {%- endif -%}
             </a>
             <div class="eb-card__body">
-              <p class="eb-card__type">{{ product.type | escape }}</p>
+              <p class="eb-card__type">
+                {{- product.type | escape -}}
+                {%- if colores > 1 %} · {{ colores }} colores{% endif -%}
+              </p>
               <h3 class="eb-card__title">
                 <a href="{{ product.url }}">{{ product.title | escape }}</a>
               </h3>
@@ -176,7 +182,8 @@
     color: #9a9082;
   }
 
-  .eb-card__form {
+  .eb-card__form,
+  .eb-card__btn--link {
     margin-top: auto;
   }
 

@@ -1,0 +1,213 @@
+{% comment %}
+  Section contract.
+  Pie de página de Eres Bella: marca con frase, dos menús, datos de envío y cambios
+  y los medios de pago activos en la tienda.
+{% endcomment %}
+
+{%- render 'eb-estilos' -%}
+
+{%- liquid
+  assign menu_tienda = section.settings.menu
+  assign politica = shop.privacy_policy
+-%}
+
+<div class="eb-pie">
+  <div class="eb-wrap eb-pie__grid">
+    <div class="eb-pie__brand">
+      <p class="eb-pie__logo">{{ shop.name | escape }}</p>
+      {%- if section.settings.text != blank -%}
+        <p class="eb-pie__text">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if menu_tienda.links.size > 0 -%}
+      <nav class="eb-pie__col" aria-label="{{ section.settings.menu_title | escape }}">
+        <p class="eb-pie__title">{{ section.settings.menu_title | escape }}</p>
+        <ul class="eb-pie__list" role="list">
+          {%- for link in menu_tienda.links -%}
+            <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    <div class="eb-pie__col">
+      <p class="eb-pie__title">{{ section.settings.help_title | escape }}</p>
+      <ul class="eb-pie__list" role="list">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+            {%- else -%}
+              {{ block.settings.text | escape }}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+        {%- if politica != blank -%}
+          <li><a href="{{ politica.url }}">{{ politica.title | escape }}</a></li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    <div class="eb-pie__col">
+      <p class="eb-pie__title">{{ section.settings.pay_title | escape }}</p>
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <ul class="eb-pie__pagos" role="list">
+          {%- for tipo in shop.enabled_payment_types -%}
+            <li>{{ tipo | payment_type_svg_tag: class: 'eb-pie__pago' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if section.settings.pay_text != blank -%}
+        <p class="eb-pie__note">{{ section.settings.pay_text | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .eb-pie {
+    padding-block: clamp(40px, 5vw, 64px) clamp(28px, 3vw, 40px);
+    border-top: 1px solid #e2d4c2;
+    background: #efe6d8;
+    color: #4a443b;
+  }
+
+  .eb-pie__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+    gap: clamp(24px, 4vw, 64px);
+  }
+
+  .eb-pie__logo {
+    margin: 0 0 12px;
+    font-family: var(--font-heading--family);
+    font-size: 1.9rem;
+    font-style: italic;
+    line-height: 1;
+    color: #2e2a24;
+  }
+
+  .eb-pie__text {
+    max-width: 34ch;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .eb-pie__title {
+    margin: 0 0 16px;
+    font-family: var(--font-subheading--family);
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #a65f43;
+  }
+
+  .eb-pie__list {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    list-style: none;
+  }
+
+  .eb-pie__list li {
+    padding-block: 4px;
+  }
+
+  .eb-pie__list a {
+    display: inline-block;
+    padding-block: 4px;
+    color: #2e2a24;
+    text-decoration: none;
+    background: linear-gradient(currentcolor, currentcolor) 0 calc(100% - 2px) / 0 1px no-repeat;
+    transition: background-size 0.3s ease;
+  }
+
+  .eb-pie__list li:has(a) {
+    padding-block: 0;
+  }
+
+  .eb-pie__list a:hover {
+    background-size: 100% 1px;
+  }
+
+  .eb-pie__list a:focus-visible {
+    outline: 2px solid #a65f43;
+    outline-offset: 3px;
+  }
+
+  .eb-pie__pagos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .eb-pie__pago {
+    display: block;
+    width: 38px;
+    height: 24px;
+  }
+
+  .eb-pie__note {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 989px) {
+    .eb-pie__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .eb-pie__brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .eb-pie__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eb-pie__list a {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "EB · Pie de página",
+  "tag": "section",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "textarea", "id": "text", "label": "Frase de la marca", "default": "Cosmética natural y vegana, elaborada en España en lotes pequeños." },
+    { "type": "text", "id": "menu_title", "label": "Título del menú", "default": "Tienda" },
+    { "type": "link_list", "id": "menu", "label": "Menú", "default": "main-menu" },
+    { "type": "text", "id": "help_title", "label": "Título de la ayuda", "default": "Ayuda" },
+    { "type": "text", "id": "pay_title", "label": "Título del pago", "default": "Pago seguro" },
+    { "type": "textarea", "id": "pay_text", "label": "Texto del pago", "default": "Tienda de demostración: el pago es de prueba y no se cobra nada." }
+  ],
+  "blocks": [
+    {
+      "type": "linea",
+      "name": "Línea de ayuda",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texto", "default": "Envío en 24-48 h" },
+        { "type": "url", "id": "link", "label": "Enlace (opcional)" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "EB · Pie de página" }]
+}
+{% endschema %}

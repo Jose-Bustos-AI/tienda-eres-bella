@@ -18,13 +18,14 @@ config/settings_data.json  Colores, tipografías y ajustes del tema
 ## Cómo está hecha
 - Shopify, tienda de desarrollo con el plan Basic
 - Tema Horizon, el tema oficial y gratuito de Shopify
-- Seis secciones de portada programadas a medida en Liquid: portada, compromisos, más vendidos, rutina en tres pasos, categorías y filosofía de marca
+- Ocho secciones programadas a medida en Liquid: portada, compromisos, más vendidos, rutina en tres pasos, mosaico de productos de cuerpo, categorías, filosofía de marca y pie de página
 - Portada con titular animado, tarjeta flotante de producto, tres datos de confianza y cinta de frases en movimiento, que se desactiva si el visitante pide menos animación
 - Paleta, tipografías (Cormorant y Jost) y botones redondeados propios de la marca
 - Tienda, menús, correos y páginas de sistema en español
 
 ## Catálogo y compra
-- 16 productos de rostro, cuerpo y cabello, cuatro de ellos en oferta con el precio tachado
+- 16 productos de rostro, cuerpo y cabello
+- Ficha de producto con línea de confianza y desplegables de conservación, envíos y elaboración
 - Set de rutina facial que agrupa tres productos con 9,80 € de ahorro
 - Botón "Añadir al carrito" directo desde la portada
 - Colecciones automáticas: Rostro y Cuerpo por tipo de producto, y Más vendidos por etiqueta

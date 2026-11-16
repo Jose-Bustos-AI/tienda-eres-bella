@@ -1,4 +1,12 @@
-{
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */{
   "sections": {
     "eb_hero": {
       "type": "eb-hero",
@@ -182,6 +190,17 @@
         "button_label": "Descubre la colección",
         "button_link": "shopify://collections/all"
       }
+    },
+    "eb_lookbook": {
+      "type": "eb-lookbook",
+      "settings": {
+        "eyebrow": "Para el cuerpo",
+        "heading": "Después de la ducha,",
+        "heading_accent": "sin prisas",
+        "text": "Aceites, mantecas y jabones para cuidar la piel de todo el cuerpo. Toca cualquiera para verlo de cerca.",
+        "collection": "cuerpo",
+        "offset": 0
+      }
     }
   },
   "order": [
@@ -189,6 +208,7 @@
     "eb_valores",
     "eb_destacados",
     "eb_ritual",
+    "eb_lookbook",
     "eb_categorias",
     "eb_filosofia"
   ]

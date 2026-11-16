@@ -4,6 +4,7 @@
 {% endcomment %}
 
 {%- render 'eb-estilos' -%}
+{%- assign alt_marca = section.settings.image.alt | default: section.settings.heading -%}
 
 <div class="eb-filosofia">
   <div class="eb-wrap eb-filosofia__grid">
@@ -17,8 +18,7 @@
             loading: 'lazy',
             widths: '500, 800, 1100, 1400',
             sizes: '(min-width: 990px) 50vw, 100vw',
-            alt: section.settings.image.alt
-          | default: section.settings.heading
+            alt: alt_marca
         }}
       {%- endif -%}
     </div>

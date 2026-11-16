@@ -20,7 +20,7 @@
     <ol class="eb-ritual__list" role="list">
       {%- for block in section.blocks -%}
         {%- assign producto = block.settings.product -%}
-        <li class="eb-ritual__step" {{ block.shopify_attributes }}>
+        <li class="eb-ritual__step eb-reveal" {{ block.shopify_attributes }}>
           <div class="eb-ritual__media">
             {%- if producto != blank and producto.featured_image -%}
               {{
@@ -82,6 +82,21 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.7s ease;
+  }
+
+  .eb-ritual__step:hover .eb-ritual__img {
+    transform: scale(1.04);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eb-ritual__img {
+      transition: none;
+    }
+
+    .eb-ritual__step:hover .eb-ritual__img {
+      transform: none;
+    }
   }
 
   .eb-ritual__num {
